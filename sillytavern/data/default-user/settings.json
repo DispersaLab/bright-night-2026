@@ -179,7 +179,7 @@
         "n": 1,
         "server_urls": {
             "ooba": "http://localhost:8001/v1",
-            "vllm": "http://172.17.0.1:8001/v1"
+            "vllm": "http://vllm:8001/v1"
         },
         "custom_model": "Qwen/Qwen3.5-35B-A3B-FP8",
         "bypass_status_check": false,
@@ -412,7 +412,7 @@
             },
             {
                 "label": "vllm",
-                "url": "http://172.17.0.1:8001/v1",
+                "url": "http://vllm:8001/v1",
                 "lastConnection": 1785511346617
             }
         ],
@@ -823,7 +823,7 @@
                 }
             ],
             "comfy_type": "standard",
-            "comfy_url": "http://172.17.0.1:8188",
+            "comfy_url": "http://host.docker.internal:8188",
             "comfy_workflow": "flux.json",
             "comfy_runpod_url": "",
             "pollinations_enhance": false,
@@ -1663,7 +1663,7 @@
         "azure_api_version": "2024-02-15-preview",
         "azure_openai_model": "",
         "custom_model": "Qwen/Qwen3.5-35B-A3B-FP8",
-        "custom_url": "http://172.17.0.1:8001/v1",
+        "custom_url": "http://vllm:8001/v1",
         "custom_include_body": "chat_template_kwargs:\n  enable_thinking: false",
         "custom_exclude_body": "",
         "custom_include_headers": "",

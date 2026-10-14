@@ -1,3 +1,5 @@
+# NVIDIA DGX Spark (GB10, Linux/arm64) stack. GPU and memory settings are
+# specific to this machine.
 name: storyteller
 
 # Matches the DeviceRequests observed on the running containers:
@@ -30,7 +32,7 @@ services:
     shm_size: 64mb
 
     ports:
-      - "${VLLM_PORT:-8001}:${VLLM_PORT:-8001}"
+      - "${VLLM_PORT:-8001}:8001"
 
     volumes:
       # Was ~/.cache/huggingface, which resolved to whichever user ran compose.
@@ -41,7 +43,7 @@ services:
     command:
       - "${VLLM_MODEL:-Qwen/Qwen3.5-35B-A3B-FP8}"
       - "--host=0.0.0.0"
-      - "--port=${VLLM_PORT:-8001}"
+      - "--port=8001"
       - "--tensor-parallel-size=1"
       - "--trust-remote-code"
       - "--kv-cache-dtype=fp8"
@@ -67,7 +69,7 @@ services:
       - "--language-model-only"
 
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:${VLLM_PORT:-8001}/health"]
+      test: ["CMD", "curl", "-f", "http://localhost:8001/health"]
       interval: 30s
       timeout: 10s
       retries: 5
@@ -77,25 +79,14 @@ services:
 
   # --------------------------------------------------------------- ComfyUI
   comfyui:
-    # Locally built - there is no registry to pull this from.
-    #
-    # There is deliberately NO `build:` section here. Portainer has only
-    # docker.sock and its own volume mounted, so it cannot read the build
-    # context on the host; a build triggered from a Portainer stack would fail
-    # with a confusing context error. Requiring the image to pre-exist turns
-    # that into a clear "image not found" instead.
-    #
-    # To (re)build it, from the repo root on the host:
-    #      docker build -t storyteller-comfyui:0.29.0 comfyui/build/
-    # Read the CAVEAT in comfyui/build/Dockerfile first - those pins have not
-    # been validated by an actual rebuild, and this image cannot be re-pulled.
+    # Legacy Portainer stack uses a prebuilt image. Local DGX Spark installs
+    # build this image with compose.local.yml.
     image: storyteller-comfyui:0.29.0
     container_name: comfyui_dgx
     restart: unless-stopped
 
-    # Kept as host networking to match the working configuration. SillyTavern
-    # currently reaches ComfyUI at the docker0 gateway (172.17.0.1:8188), which
-    # continues to work because this port is on the host.
+    # ComfyUI listens on the host. SillyTavern reaches it through
+    # host.docker.internal, mapped below to the Docker host gateway.
     network_mode: host
     shm_size: 8gb
 
@@ -112,7 +103,7 @@ services:
     <<: *gpu
 
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:${COMFYUI_PORT:-8188}/system_stats"]
+      test: ["CMD", "curl", "-f", "http://localhost:8188/system_stats"]
       interval: 30s
       timeout: 10s
       retries: 5
@@ -120,7 +111,7 @@ services:
 
   # ------------------------------------------------------------- Kokoro TTS
   kokoro:
-    image: ghcr.io/remsky/kokoro-fastapi-gpu
+    image: ${KOKORO_IMAGE:-ghcr.io/remsky/kokoro-fastapi-gpu}
     container_name: kokoro_tts
     restart: unless-stopped
     ports:
@@ -135,13 +126,14 @@ services:
 
   # ----------------------------------------------------------- SillyTavern
   sillytavern:
-    # Pinned by digest. SillyTavern 1.18.0.
+    # Local installs build this tag from the SillyTavern submodule with
+    # compose.local.yml; existing Portainer installs keep using their image.
     image: storyteller-sillytavern:1.18.0-panels
     container_name: sillytavern
     restart: unless-stopped
 
     ports:
-      - "${SILLYTAVERN_PORT:-8010}:${SILLYTAVERN_PORT:-8010}"
+      - "${SILLYTAVERN_PORT:-8010}:8010"
 
     volumes:
       - ${SILLYTAVERN_DIR:-/home/s.urso/Bright-2026-Comic-style-Storyteller/sillytavern}/data:/home/node/app/data
@@ -169,7 +161,7 @@ services:
     healthcheck:
       # (0.0.0.0:8010). Using localhost here makes the check fail forever with
       # "Connection refused" while the service is actually fine.
-      test: ["CMD", "wget", "-q", "--spider", "http://127.0.0.1:${SILLYTAVERN_PORT:-8010}/"]
+      test: ["CMD", "wget", "-q", "--spider", "http://127.0.0.1:8010/"]
       interval: 30s
       timeout: 10s
       retries: 5
@@ -181,7 +173,7 @@ services:
     restart: unless-stopped
     volumes:
       - ${BRIGHT_COMPOSER_DIR:-/home/s.urso/Bright-2026-Comic-style-Storyteller/bright_composer}:/app/bright_composer
-    command: ["python", "/app/bright_composer/compose_daemon.py", "--path", "/app/bright_composer/bright", "--time", "${COMPOSER_POLL_INTERVAL:-5}", "--push-url", "http://192.168.77.1:8000/upload"]
+    command: ["python", "/app/bright_composer/compose_daemon.py", "--path", "/app/bright_composer/bright", "--time", "${COMPOSER_POLL_INTERVAL:-5}", "--push-url", "${COMPOSER_PUSH_URL-http://192.168.77.1:8000/upload}"]
     healthcheck:
       test: ["CMD", "python", "-c", "from pathlib import Path; assert Path('/app/bright_composer/bright').is_dir()"]
       interval: 30s

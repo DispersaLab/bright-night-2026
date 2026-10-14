@@ -1,9 +1,6 @@
 # ComfyUI for DGX Spark (GB10 Grace Blackwell, aarch64)
 #
-# Recovered from /home/v.besozzi/Desktop/comfy_ui/Dockerfile.
-# The original cloned ComfyUI HEAD and installed unpinned dependencies, so it
-# could never rebuild the image it produced. The pins below were extracted
-# from the running comfyui_dgx container.
+# The pins below were extracted from the original DGX Spark container.
 #
 # CAVEAT: this pins ComfyUI and torchaudio to exact commits, but ComfyUI's own
 # requirements.txt still uses version ranges, so a rebuild is close to but not

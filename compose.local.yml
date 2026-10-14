@@ -1,0 +1,16 @@
+# Build repository images for the DGX Spark's ARM64 platform.
+# Initialise the SillyTavern submodule first. Use with docker-compose.yml.
+services:
+  vllm:
+    platform: linux/arm64
+  comfyui:
+    platform: linux/arm64
+    build: ./comfyui/build
+  kokoro:
+    platform: linux/arm64
+  sillytavern:
+    platform: linux/arm64
+    build: ./SillyTavern
+  composer:
+    platform: linux/arm64
+    build: ./bright_composer
