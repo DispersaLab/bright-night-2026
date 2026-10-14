@@ -1,0 +1,83 @@
+### comfy_ui build context (top level)
+total 15588
+drwxrwxr-x 3 v.besozzi docker        4096 Jul 31 11:32 .
+drwxr-xr-x 4 v.besozzi v.besozzi     4096 Jul 31 13:34 ..
+-rw-rw-r-- 1 v.besozzi v.besozzi 15940132 Jul 31 11:31 7092672783005056322.vrm.glb
+drwxr-xr-x 6 root      root          4096 Jul 30 15:10 data
+-rw-rw-r-- 1 v.besozzi docker         505 Jul 31 10:50 docker-compose.yml
+-rw-rw-r-- 1 v.besozzi docker         655 Jul 30 17:30 Dockerfile
+
+### Dockerfile(s) found
+/home/v.besozzi/Desktop/comfy_ui/docker-compose.yml
+/home/v.besozzi/Desktop/comfy_ui/Dockerfile
+
+### docker-compose.yml contents
+version: '3.8'
+
+services:
+  comfyui:
+    build: .
+    container_name: comfyui_dgx
+    network_mode: "host"
+    volumes:
+      - ./data/models:/app/ComfyUI/models
+      - ./data/custom_nodes:/app/ComfyUI/custom_nodes
+      - ./data/output:/app/ComfyUI/output
+      - ./data/input:/app/ComfyUI/input
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all 
+              capabilities: [gpu]
+    restart: unless-stopped
+    shm_size: '8gb'
+
+### Dockerfile contents
+FROM nvcr.io/nvidia/pytorch:26.07-py3
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update && apt-get install -y \
+    git \
+    wget \
+    libgl1 \
+    libglib2.0-0 \
+    ffmpeg \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+RUN git clone https://github.com/comfyanonymous/ComfyUI.git
+
+WORKDIR /app/ComfyUI
+
+RUN sed -i -E '/^(torch|torchvision|torchaudio|xformers)([>=~]|$)/d' requirements.txt
+
+RUN pip install --no-cache-dir --no-build-isolation --no-deps git+https://github.com/pytorch/audio.git && \
+    pip install --no-cache-dir -r requirements.txt
+
+EXPOSE 8188
+
+CMD ["python", "main.py", "--listen", "0.0.0.0", "--enable-cors-header", "*"]
+
+### sizes to migrate
+44G	/home/v.besozzi/.cache/huggingface
+7.4G	/home/v.besozzi/Desktop/comfy_ui/data/models
+4.0K	/home/v.besozzi/Desktop/comfy_ui/data/custom_nodes
+8.0K	/home/v.besozzi/Desktop/comfy_ui/data/input
+4.0K	/home/v.besozzi/Desktop/comfy_ui/data/output
+
+### anything else under Desktop?
+total 20
+drwxr-xr-x  4 v.besozzi v.besozzi 4096 Jul 31 13:34 .
+drwxr-x--- 12 v.besozzi v.besozzi 4096 Jul 31 15:03 ..
+drwxrwxr-x  3 v.besozzi docker    4096 Jul 31 11:32 comfy_ui
+-rwxr-xr-x  1 v.besozzi v.besozzi  157 Jul 14 13:43 dgx-spark-developer-site.desktop
+drwxrwxr-x  2 v.besozzi v.besozzi 4096 Jul 31 13:34 vllm
+
+### ownership/uids
+uid=1002(v.besozzi) gid=1002(v.besozzi) groups=1002(v.besozzi),27(sudo),100(users),988(docker)
+uid=1000(deepspace) gid=1000(deepspace) groups=1000(deepspace),4(adm),27(sudo),29(audio),30(dip),46(plugdev),100(users),988(docker),122(lpadmin)
+uid=1001(s.urso) gid=1001(s.urso) groups=1001(s.urso),27(sudo),988(docker)

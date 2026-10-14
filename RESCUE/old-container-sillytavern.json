@@ -1,0 +1,315 @@
+[
+    {
+        "Id": "7c56c1e0cc1ee8cf0cff7ed31557a6553d3286b38dc9220fa2d107ab6a75eef3",
+        "Created": "2026-07-31T14:05:35.607639052Z",
+        "Path": "tini",
+        "Args": [
+            "--",
+            "./docker-entrypoint.sh"
+        ],
+        "State": {
+            "Status": "exited",
+            "Running": false,
+            "Paused": false,
+            "Restarting": false,
+            "OOMKilled": false,
+            "Dead": false,
+            "Pid": 0,
+            "ExitCode": 0,
+            "Error": "",
+            "StartedAt": "2026-07-31T14:05:35.626087053Z",
+            "FinishedAt": "2026-08-30T17:06:13.567201088Z",
+            "Health": {
+                "Status": "unhealthy",
+                "FailingStreak": 0,
+                "Log": [
+                    {
+                        "Start": "2026-08-30T19:04:05.078827208+02:00",
+                        "End": "2026-08-30T19:04:05.145583131+02:00",
+                        "ExitCode": 0,
+                        "Output": ""
+                    },
+                    {
+                        "Start": "2026-08-30T19:04:35.147576292+02:00",
+                        "End": "2026-08-30T19:04:35.197086056+02:00",
+                        "ExitCode": 0,
+                        "Output": ""
+                    },
+                    {
+                        "Start": "2026-08-30T19:05:05.198338085+02:00",
+                        "End": "2026-08-30T19:05:05.252643887+02:00",
+                        "ExitCode": 0,
+                        "Output": ""
+                    },
+                    {
+                        "Start": "2026-08-30T19:05:35.253690046+02:00",
+                        "End": "2026-08-30T19:05:35.311961408+02:00",
+                        "ExitCode": 0,
+                        "Output": ""
+                    },
+                    {
+                        "Start": "2026-08-30T19:06:05.313228018+02:00",
+                        "End": "2026-08-30T19:06:05.36895029+02:00",
+                        "ExitCode": 0,
+                        "Output": ""
+                    }
+                ]
+            }
+        },
+        "Image": "sha256:830ad094059aa94337f70e2cd38f7ce3a1507a36ecd0b38332788987847869f9",
+        "ResolvConfPath": "/var/lib/docker/containers/7c56c1e0cc1ee8cf0cff7ed31557a6553d3286b38dc9220fa2d107ab6a75eef3/resolv.conf",
+        "HostnamePath": "/var/lib/docker/containers/7c56c1e0cc1ee8cf0cff7ed31557a6553d3286b38dc9220fa2d107ab6a75eef3/hostname",
+        "HostsPath": "/var/lib/docker/containers/7c56c1e0cc1ee8cf0cff7ed31557a6553d3286b38dc9220fa2d107ab6a75eef3/hosts",
+        "LogPath": "/var/lib/docker/containers/7c56c1e0cc1ee8cf0cff7ed31557a6553d3286b38dc9220fa2d107ab6a75eef3/7c56c1e0cc1ee8cf0cff7ed31557a6553d3286b38dc9220fa2d107ab6a75eef3-json.log",
+        "Name": "/sillytavern",
+        "RestartCount": 0,
+        "Driver": "overlay2",
+        "Platform": "linux",
+        "MountLabel": "",
+        "ProcessLabel": "",
+        "AppArmorProfile": "docker-default",
+        "ExecIDs": null,
+        "HostConfig": {
+            "Binds": [
+                "/home/s.urso/Bright-2026-Comic-style-Storyteller/SillyTavern/docker/data:/home/node/app/data:rw",
+                "/home/s.urso/Bright-2026-Comic-style-Storyteller/SillyTavern/docker/plugins:/home/node/app/plugins:rw",
+                "/home/s.urso/Bright-2026-Comic-style-Storyteller/SillyTavern/docker/extensions:/home/node/app/public/scripts/extensions/third-party:rw",
+                "/home/s.urso/Bright-2026-Comic-style-Storyteller/SillyTavern/docker/config:/home/node/app/config:rw"
+            ],
+            "ContainerIDFile": "",
+            "LogConfig": {
+                "Type": "json-file",
+                "Config": {}
+            },
+            "NetworkMode": "docker_default",
+            "PortBindings": {
+                "8010/tcp": [
+                    {
+                        "HostIp": "",
+                        "HostPort": "8010"
+                    }
+                ]
+            },
+            "RestartPolicy": {
+                "Name": "unless-stopped",
+                "MaximumRetryCount": 0
+            },
+            "AutoRemove": false,
+            "VolumeDriver": "",
+            "VolumesFrom": null,
+            "ConsoleSize": [
+                0,
+                0
+            ],
+            "CapAdd": null,
+            "CapDrop": null,
+            "CgroupnsMode": "private",
+            "Dns": null,
+            "DnsOptions": null,
+            "DnsSearch": null,
+            "ExtraHosts": [],
+            "GroupAdd": null,
+            "IpcMode": "private",
+            "Cgroup": "",
+            "Links": null,
+            "OomScoreAdj": 0,
+            "PidMode": "",
+            "Privileged": false,
+            "PublishAllPorts": false,
+            "ReadonlyRootfs": false,
+            "SecurityOpt": null,
+            "UTSMode": "",
+            "UsernsMode": "",
+            "ShmSize": 67108864,
+            "Runtime": "runc",
+            "Isolation": "",
+            "CpuShares": 0,
+            "Memory": 0,
+            "NanoCpus": 0,
+            "CgroupParent": "",
+            "BlkioWeight": 0,
+            "BlkioWeightDevice": null,
+            "BlkioDeviceReadBps": null,
+            "BlkioDeviceWriteBps": null,
+            "BlkioDeviceReadIOps": null,
+            "BlkioDeviceWriteIOps": null,
+            "CpuPeriod": 0,
+            "CpuQuota": 0,
+            "CpuRealtimePeriod": 0,
+            "CpuRealtimeRuntime": 0,
+            "CpusetCpus": "",
+            "CpusetMems": "",
+            "Devices": null,
+            "DeviceCgroupRules": null,
+            "DeviceRequests": null,
+            "MemoryReservation": 0,
+            "MemorySwap": 0,
+            "MemorySwappiness": null,
+            "OomKillDisable": null,
+            "PidsLimit": null,
+            "Ulimits": null,
+            "CpuCount": 0,
+            "CpuPercent": 0,
+            "IOMaximumIOps": 0,
+            "IOMaximumBandwidth": 0,
+            "MaskedPaths": [
+                "/proc/acpi",
+                "/proc/asound",
+                "/proc/interrupts",
+                "/proc/kcore",
+                "/proc/keys",
+                "/proc/latency_stats",
+                "/proc/sched_debug",
+                "/proc/scsi",
+                "/proc/timer_list",
+                "/proc/timer_stats",
+                "/sys/devices/virtual/powercap",
+                "/sys/firmware"
+            ],
+            "ReadonlyPaths": [
+                "/proc/bus",
+                "/proc/fs",
+                "/proc/irq",
+                "/proc/sys",
+                "/proc/sysrq-trigger"
+            ]
+        },
+        "GraphDriver": {
+            "Data": {
+                "ID": "7c56c1e0cc1ee8cf0cff7ed31557a6553d3286b38dc9220fa2d107ab6a75eef3",
+                "LowerDir": "/var/lib/docker/overlay2/4eb6558acd7e9606495847b4dae874b84c6c82e297c8620bc9bf26a78a56b42a-init/diff:/var/lib/docker/overlay2/2ac407ea23ea1a1f19fa69fd7eb11717950bea65ca30ad3bb95be9da06715e26/diff:/var/lib/docker/overlay2/f88e83e6564c21e595408cddbe6bb355d7b361b9f707f879124903c73cd19a02/diff:/var/lib/docker/overlay2/6243d7bdcb93a04460ad01c756bb388ee5d37f5fff9b4b8b9dd79cf16fdcff62/diff:/var/lib/docker/overlay2/e7ef115295f7e257d34e09d3e382cf679d1cc62889c0a933e7dc1ce400be869f/diff:/var/lib/docker/overlay2/888bf902b1fd0228111937ff04dd8e4968f8ef36137ae8d7b9150f8d7c857522/diff:/var/lib/docker/overlay2/75955a2901bb6f7965d6f7297b4bc2309f6203a943b871bed008caf78ebabd69/diff:/var/lib/docker/overlay2/b76d75bd754e01ece5a6c40e869a38bb907c9da7aef91acfadcb336d6f4abe6c/diff:/var/lib/docker/overlay2/af5c710c4ddb292a9d52aae0563e73eb4a449797a44a8ab18b4d68bf02c74951/diff:/var/lib/docker/overlay2/e125047623a4fbfe9d087836fc37da17982624cb1dffb46f0b7368f9624d8c4a/diff:/var/lib/docker/overlay2/c1e06317788c27acca1d464babd506674c298fc60dce00f3a13ff291ead9d4d9/diff:/var/lib/docker/overlay2/eb39d242100ed29f7ec32cb15e71ac05ebdfeb18c1615d7efd5ae5b37378eb69/diff:/var/lib/docker/overlay2/658085b461fad3056a36a9b324e4752b78d6785b7b39a7b6c400cd1b72ede2ed/diff:/var/lib/docker/overlay2/6de1ce8a25518c04e55028e7806bc1e3e06dd2016e53cae1715c3e6a8dda1b81/diff",
+                "MergedDir": "/var/lib/docker/overlay2/4eb6558acd7e9606495847b4dae874b84c6c82e297c8620bc9bf26a78a56b42a/merged",
+                "UpperDir": "/var/lib/docker/overlay2/4eb6558acd7e9606495847b4dae874b84c6c82e297c8620bc9bf26a78a56b42a/diff",
+                "WorkDir": "/var/lib/docker/overlay2/4eb6558acd7e9606495847b4dae874b84c6c82e297c8620bc9bf26a78a56b42a/work"
+            },
+            "Name": "overlay2"
+        },
+        "Mounts": [
+            {
+                "Type": "bind",
+                "Source": "/home/s.urso/Bright-2026-Comic-style-Storyteller/SillyTavern/docker/extensions",
+                "Destination": "/home/node/app/public/scripts/extensions/third-party",
+                "Mode": "rw",
+                "RW": true,
+                "Propagation": "rprivate"
+            },
+            {
+                "Type": "bind",
+                "Source": "/home/s.urso/Bright-2026-Comic-style-Storyteller/SillyTavern/docker/config",
+                "Destination": "/home/node/app/config",
+                "Mode": "rw",
+                "RW": true,
+                "Propagation": "rprivate"
+            },
+            {
+                "Type": "bind",
+                "Source": "/home/s.urso/Bright-2026-Comic-style-Storyteller/SillyTavern/docker/data",
+                "Destination": "/home/node/app/data",
+                "Mode": "rw",
+                "RW": true,
+                "Propagation": "rprivate"
+            },
+            {
+                "Type": "bind",
+                "Source": "/home/s.urso/Bright-2026-Comic-style-Storyteller/SillyTavern/docker/plugins",
+                "Destination": "/home/node/app/plugins",
+                "Mode": "rw",
+                "RW": true,
+                "Propagation": "rprivate"
+            }
+        ],
+        "Config": {
+            "Hostname": "sillytavern",
+            "Domainname": "",
+            "User": "",
+            "AttachStdin": false,
+            "AttachStdout": true,
+            "AttachStderr": true,
+            "ExposedPorts": {
+                "8000/tcp": {},
+                "8010/tcp": {}
+            },
+            "Tty": false,
+            "OpenStdin": false,
+            "StdinOnce": false,
+            "Env": [
+                "SILLYTAVERN_HEARTBEATINTERVAL=30",
+                "NODE_ENV=production",
+                "FORCE_COLOR=1",
+                "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+                "NODE_VERSION=24.18.0",
+                "YARN_VERSION=1.22.22"
+            ],
+            "Cmd": null,
+            "Healthcheck": {
+                "Test": [
+                    "CMD",
+                    "node",
+                    "src/healthcheck.js"
+                ],
+                "Interval": 30000000000,
+                "Timeout": 10000000000,
+                "StartPeriod": 20000000000,
+                "Retries": 3
+            },
+            "Image": "ghcr.io/sillytavern/sillytavern:latest",
+            "Volumes": null,
+            "WorkingDir": "/home/node/app",
+            "Entrypoint": [
+                "tini",
+                "--",
+                "./docker-entrypoint.sh"
+            ],
+            "Labels": {
+                "com.docker.compose.config-hash": "eb652f0233e2eb0fe96e712a647ee4b1d7ee0cb262d0844c5b88c0e8858cace1",
+                "com.docker.compose.container-number": "1",
+                "com.docker.compose.depends_on": "",
+                "com.docker.compose.image": "sha256:830ad094059aa94337f70e2cd38f7ce3a1507a36ecd0b38332788987847869f9",
+                "com.docker.compose.oneoff": "False",
+                "com.docker.compose.project": "docker",
+                "com.docker.compose.project.config_files": "/home/s.urso/Bright-2026-Comic-style-Storyteller/SillyTavern/docker/docker-compose.yml",
+                "com.docker.compose.project.working_dir": "/home/s.urso/Bright-2026-Comic-style-Storyteller/SillyTavern/docker",
+                "com.docker.compose.service": "sillytavern",
+                "com.docker.compose.version": "5.0.2",
+                "org.opencontainers.image.created": "2026-07-07T17:36:47.413Z",
+                "org.opencontainers.image.description": "LLM Frontend for Power Users.",
+                "org.opencontainers.image.licenses": "AGPL-3.0",
+                "org.opencontainers.image.revision": "8172dcd0ee672d3cd9a5e5f7af134f91a45cd2b8",
+                "org.opencontainers.image.source": "https://github.com/SillyTavern/SillyTavern",
+                "org.opencontainers.image.title": "SillyTavern",
+                "org.opencontainers.image.url": "https://github.com/SillyTavern/SillyTavern",
+                "org.opencontainers.image.version": "release"
+            }
+        },
+        "NetworkSettings": {
+            "SandboxID": "",
+            "SandboxKey": "",
+            "Ports": {},
+            "Networks": {
+                "docker_default": {
+                    "IPAMConfig": null,
+                    "Links": null,
+                    "Aliases": [
+                        "sillytavern",
+                        "sillytavern"
+                    ],
+                    "DriverOpts": null,
+                    "GwPriority": 0,
+                    "NetworkID": "dbaab792bb5c84e0ae5557fc3a213336ba80ed962c21f77632482a888c235d79",
+                    "EndpointID": "",
+                    "Gateway": "",
+                    "IPAddress": "",
+                    "MacAddress": "",
+                    "IPPrefixLen": 0,
+                    "IPv6Gateway": "",
+                    "GlobalIPv6Address": "",
+                    "GlobalIPv6PrefixLen": 0,
+                    "DNSNames": [
+                        "sillytavern",
+                        "7c56c1e0cc1e"
+                    ]
+                }
+            }
+        }
+    }
+]

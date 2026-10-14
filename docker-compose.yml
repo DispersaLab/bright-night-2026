@@ -1,0 +1,204 @@
+name: storyteller
+
+# Matches the DeviceRequests observed on the running containers:
+#    {"Driver":"nvidia","Count":-1,"Capabilities":[["gpu"]]}
+# Note the host uses Runtime=runc (NOT runtime: nvidia) - this deploy block is
+# what produces that, so do not "fix" it into a runtime: line.
+x-gpu: &gpu
+  deploy:
+    resources:
+      reservations:
+        devices:
+          - driver: nvidia
+            count: all
+            capabilities: [gpu]
+
+services:
+
+  # ------------------------------------------------------------------ vLLM
+  vllm:
+    # Pinned by digest. vLLM 0.26.0. Never use :latest - an unpinned pull is
+    # how the ComfyUI workflows would have been lost.
+    image: vllm/vllm-openai@sha256:ffb2d59b1c059a5bd8d781320c9f5189de8293693b7d95da54befddaa54abf52
+    container_name: vllm_qwen_optimized
+    restart: unless-stopped
+
+    # The previous ad-hoc compose had `privileged: true`. It is NOT needed -
+    # GPU access comes from the deploy block above - and it granted the
+    # container near-total host access. Deliberately removed.
+    ipc: host
+    shm_size: 64mb
+
+    ports:
+      - "${VLLM_PORT:-8001}:${VLLM_PORT:-8001}"
+
+    volumes:
+      # Was ~/.cache/huggingface, which resolved to whichever user ran compose.
+      - ${HF_CACHE_DIR:-/home/s.urso/Bright-2026-Comic-style-Storyteller/hf-cache}:/root/.cache/huggingface
+
+    <<: *gpu
+
+    command:
+      - "${VLLM_MODEL:-Qwen/Qwen3.5-35B-A3B-FP8}"
+      - "--host=0.0.0.0"
+      - "--port=${VLLM_PORT:-8001}"
+      - "--tensor-parallel-size=1"
+      - "--trust-remote-code"
+      - "--kv-cache-dtype=fp8"
+      # --moe-backend=marlin REMOVED. Marlin is an INT4 kernel path; these
+      # weights are NVFP4, which Blackwell handles natively. Omitting the flag
+      # lets vLLM pick (default "auto").
+      - "--gpu-memory-utilization=${VLLM_GPU_MEM_UTIL:-0.38}"
+      - "--max-model-len=${VLLM_MAX_MODEL_LEN:-32768}"
+      - "--max-num-seqs=${VLLM_MAX_NUM_SEQS:-8}"
+      - "--max-num-batched-tokens=${VLLM_MAX_NUM_BATCHED_TOKENS:-8192}"
+      - "--enable-chunked-prefill"
+      - "--async-scheduling"
+      - "--enable-prefix-caching"
+      - "--load-format=fastsafetensors"
+      - "--reasoning-parser=qwen3"
+      - "--tool-call-parser=qwen3_xml"
+      - "--enable-auto-tool-choice"
+      # Nothing currently sends images TO the model, so multimodal input is
+      # disabled to avoid reserving memory for it.
+      # ► TO ENABLE panel-consistency checking (feeding generated panels back
+      #    to the model), delete the next line and restore:
+      #        - "--mm-encoder-tp-mode=data"
+      - "--language-model-only"
+
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:${VLLM_PORT:-8001}/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      # Cold start measured at ~5.5 min (223 s weight load + 117 s engine init),
+      # so this window is deliberately generous.
+      start_period: 600s
+
+  # --------------------------------------------------------------- ComfyUI
+  comfyui:
+    # Locally built - there is no registry to pull this from.
+    #
+    # There is deliberately NO `build:` section here. Portainer has only
+    # docker.sock and its own volume mounted, so it cannot read the build
+    # context on the host; a build triggered from a Portainer stack would fail
+    # with a confusing context error. Requiring the image to pre-exist turns
+    # that into a clear "image not found" instead.
+    #
+    # To (re)build it, from the repo root on the host:
+    #      docker build -t storyteller-comfyui:0.29.0 comfyui/build/
+    # Read the CAVEAT in comfyui/build/Dockerfile first - those pins have not
+    # been validated by an actual rebuild, and this image cannot be re-pulled.
+    image: storyteller-comfyui:0.29.0
+    container_name: comfyui_dgx
+    restart: unless-stopped
+
+    # Kept as host networking to match the working configuration. SillyTavern
+    # currently reaches ComfyUI at the docker0 gateway (172.17.0.1:8188), which
+    # continues to work because this port is on the host.
+    network_mode: host
+    shm_size: 8gb
+
+    volumes:
+      - ${COMFYUI_DIR:-/home/s.urso/Bright-2026-Comic-style-Storyteller/comfyui}/models:/app/ComfyUI/models
+      - ${COMFYUI_DIR:-/home/s.urso/Bright-2026-Comic-style-Storyteller/comfyui}/custom_nodes:/app/ComfyUI/custom_nodes
+      - ${COMFYUI_DIR:-/home/s.urso/Bright-2026-Comic-style-Storyteller/comfyui}/output:/app/ComfyUI/output
+      - ${COMFYUI_DIR:-/home/s.urso/Bright-2026-Comic-style-Storyteller/comfyui}/input:/app/ComfyUI/input
+      # ★ THE FIX. This path was NOT mounted before, so every saved workflow
+      # lived only in the container's writable layer and would have been
+      # destroyed by the first `docker compose down` or image pull.
+      - ${COMFYUI_DIR:-/home/s.urso/Bright-2026-Comic-style-Storyteller/comfyui}/user:/app/ComfyUI/user
+
+    <<: *gpu
+
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:${COMFYUI_PORT:-8188}/system_stats"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 120s
+
+  # ------------------------------------------------------------- Kokoro TTS
+  kokoro:
+    image: ghcr.io/remsky/kokoro-fastapi-gpu
+    container_name: kokoro_tts
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:8880:8880"
+    <<: *gpu
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8880/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+
+  # ----------------------------------------------------------- SillyTavern
+  sillytavern:
+    # Pinned by digest. SillyTavern 1.18.0.
+    image: storyteller-sillytavern:1.18.0-panels
+    container_name: sillytavern
+    restart: unless-stopped
+
+    ports:
+      - "${SILLYTAVERN_PORT:-8010}:${SILLYTAVERN_PORT:-8010}"
+
+    volumes:
+      - ${SILLYTAVERN_DIR:-/home/s.urso/Bright-2026-Comic-style-Storyteller/sillytavern}/data:/home/node/app/data
+      - ${SILLYTAVERN_DIR:-/home/s.urso/Bright-2026-Comic-style-Storyteller/sillytavern}/plugins:/home/node/app/plugins
+      - ${SILLYTAVERN_DIR:-/home/s.urso/Bright-2026-Comic-style-Storyteller/sillytavern}/extensions:/home/node/app/public/scripts/extensions/third-party
+      - ${SILLYTAVERN_DIR:-/home/s.urso/Bright-2026-Comic-style-Storyteller/sillytavern}/config:/home/node/app/config
+      - ${BRIGHT_COMPOSER_DIR:-/home/s.urso/Bright-2026-Comic-style-Storyteller/bright_composer}:/app/bright_composer
+    environment:
+      BRIGHT_COMPOSER_DIR: /app/bright_composer
+
+    # Lets the container resolve the host explicitly rather than relying on the
+    # docker0 address staying 172.17.0.1.
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+    depends_on:
+      vllm:
+        condition: service_healthy
+      comfyui:
+        condition: service_healthy
+      kokoro:
+        condition: service_started
+      composer:
+        condition: service_started
+    healthcheck:
+      # (0.0.0.0:8010). Using localhost here makes the check fail forever with
+      # "Connection refused" while the service is actually fine.
+      test: ["CMD", "wget", "-q", "--spider", "http://127.0.0.1:${SILLYTAVERN_PORT:-8010}/"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+
+  composer:
+    image: storyteller-composer:0.1.0
+    container_name: bright_composer
+    restart: unless-stopped
+    volumes:
+      - ${BRIGHT_COMPOSER_DIR:-/home/s.urso/Bright-2026-Comic-style-Storyteller/bright_composer}:/app/bright_composer
+    command: ["python", "/app/bright_composer/compose_daemon.py", "--path", "/app/bright_composer/bright", "--time", "${COMPOSER_POLL_INTERVAL:-5}", "--push-url", "http://192.168.77.1:8000/upload"]
+    healthcheck:
+      test: ["CMD", "python", "-c", "from pathlib import Path; assert Path('/app/bright_composer/bright').is_dir()"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
+
+# The default compose network gets whatever subnet Docker has free, so its
+# gateway IP changes whenever networks are added or removed. SillyTavern's
+# whitelist is keyed on that gateway, which is why config.yaml had accumulated
+# 172.19.0.1 and 172.20.0.1 - one stale entry per past reshuffle.
+# Pinning the subnet makes the gateway permanently 172.23.0.1. This is the
+# subnet the network already has, so pinning it requires no teardown.
+networks:
+  default:
+    name: storyteller_default
+    ipam:
+      config:
+        - subnet: 172.23.0.0/16
+          gateway: 172.23.0.1

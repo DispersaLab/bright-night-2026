@@ -1,0 +1,18 @@
+# vLLM benchmark (after)
+# date: 2026-08-30T19:13:23+02:00
+# model: AEON-7/Qwen3.6-35B-A3B-heretic-NVFP4
+# args: AEON-7/Qwen3.6-35B-A3B-heretic-NVFP4 --host=0.0.0.0 --port=8001 --tensor-parallel-size=1 --trust-remote-code --kv-cache-dtype=fp8 --gpu-memory-utilization=0.45 --max-model-len=32768 --max-num-seqs=8 --max-num-batched-tokens=8192 --enable-chunked-prefill --async-scheduling --enable-prefix-caching --load-format=fastsafetensors --reasoning-parser=qwen3 --tool-call-parser=qwen3_xml --enable-auto-tool-choice --language-model-only
+# host mem: 62G used / 121G total, 58G available
+
+run 1: 206 tokens in 5.084782152s = 40.51 tok/s
+run 2: 191 tokens in 4.587698780s = 41.63 tok/s
+run 3: 191 tokens in 4.588997112s = 41.62 tok/s
+
+mean: 41.25 tok/s
+
+# vLLM KV cache allocation this boot:
+(EngineCore pid=278) INFO 08-30 17:08:41 [gpu_worker.py:560] Available KV cache memory: 30.2 GiB
+(EngineCore pid=278) INFO 08-30 17:08:41 [kv_cache_utils.py:2177] GPU KV cache size: 2,249,076 tokens
+(EngineCore pid=143) INFO 08-30 17:12:23 [gpu_model_runner.py:5347] Model loading took 21.04 GiB memory and 20.595311 seconds
+(EngineCore pid=143) INFO 08-30 17:12:37 [gpu_worker.py:560] Available KV cache memory: 30.16 GiB
+(EngineCore pid=143) INFO 08-30 17:12:37 [kv_cache_utils.py:2177] GPU KV cache size: 2,246,097 tokens

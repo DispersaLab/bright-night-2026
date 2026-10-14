@@ -1,0 +1,38 @@
+{
+  "pony": {
+    "label": "ponyDiffusionV6XL + two style LoRAs at 1.0 (original)",
+    "notes": "Danbooru tag prompting. Negative prompt IS active (cfg 5). Two style LoRAs are baked into alice.json at strength 1.0.",
+    "sd": {
+      "comfy_workflow": "alice.json",
+      "model": "ponyDiffusionV6XL_v6StartWithThisOne.safetensors",
+      "prompt_prefix": "score_9, score_8_up, score_7_up, score_6_up, score_5_up, score_4_up, rating_safe, abstractionism, brush stroke, traditional media, perfection style, perfection, perfect, ",
+      "negative_prompt": "lowres, bad anatomy, bad hands, text, error, cropped, worst quality, low quality, normal quality, jpeg artifacts, signature, watermark, username, blurry, bad quality, worst quality, lowres, blurry, distorted, bad anatomy, signature, watermark, patreon logo, artist name, poor lighting, sharped teeth, ",
+      "steps": 35,
+      "scale": 5,
+      "sampler": "euler_ancestral",
+      "scheduler": "karras",
+      "width": 1024,
+      "height": 1536,
+      "clip_skip": 1
+    },
+    "card_tail": "ISTRUZIONI PER IL FUNCTION CALLING (Fase 3):\r\nQuando arrivi alla Fase 3, devi invocare una sola volta la funzione `GenerateImage`.\r\n\r\nLa chiamata deve contenere un array `panels` con esattamente quattro elementi. Ogni elemento deve avere `number` (da 1 a 4) e `prompt`. I quattro prompt devono rappresentare quattro scene consecutive e visivamente distinte della stessa storia: apertura, azione o scoperta, sviluppo o pericolo, conclusione. Non ripetere la stessa scena con semi diversi. Mantieni coerenti l'aspetto dei personaggi, gli abiti, gli oggetti ricorrenti, il periodo storico e lo stile del fumetto, cambiando invece azioni, inquadrature e ambienti quando la storia lo richiede.\r\n\r\nI prompt devono essere in inglese, contenere esclusivamente elementi visibili e indicare personaggi, azioni, pose, abiti, ambiente, illuminazione e atmosfera. Devono essere concisi, separati per pannello e rigorosamente SFW. Non includere dialoghi, didascalie, testo scritto o concetti astratti nelle immagini."
+  },
+  "flux": {
+    "label": "FLUX.1-schnell fp8 (Danbooru tag prompts, shared card)",
+    "notes": "Guidance-distilled, runs at cfg 1.0 -> the negative prompt is INERT (classifier-free guidance discards the negative branch at cfg=1). 4 steps. Needs EmptySD3LatentImage (16-channel latents). No LoRAs. Shares the pony guidance block: FLUX renders Danbooru-style tag prompts well, and a prose-worded block took tool calling from 12/12 to 0/12 (measured), so the card is deliberately identical across profiles and a switch never rewrites it.",
+    "sd": {
+      "comfy_workflow": "flux.json",
+      "model": "flux1-schnell-fp8.safetensors",
+      "prompt_prefix": "{prompt} Comic book illustration, clean bold linework, vivid colours, cinematic lighting.",
+      "negative_prompt": "",
+      "steps": 4,
+      "scale": 1,
+      "sampler": "euler",
+      "scheduler": "simple",
+      "width": 896,
+      "height": 1344,
+      "clip_skip": 1
+    },
+    "card_tail": "ISTRUZIONI PER IL FUNCTION CALLING (Fase 3):\r\nQuando arrivi alla Fase 3, devi invocare una sola volta la funzione `GenerateImage`.\r\n\r\nLa chiamata deve contenere un array `panels` con esattamente quattro elementi. Ogni elemento deve avere `number` (da 1 a 4) e `prompt`. I quattro prompt devono rappresentare quattro scene consecutive e visivamente distinte della stessa storia: apertura, azione o scoperta, sviluppo o pericolo, conclusione. Non ripetere la stessa scena con semi diversi. Mantieni coerenti l'aspetto dei personaggi, gli abiti, gli oggetti ricorrenti, il periodo storico e lo stile del fumetto, cambiando invece azioni, inquadrature e ambienti quando la storia lo richiede.\r\n\r\nI prompt devono essere in inglese, contenere esclusivamente elementi visibili e indicare personaggi, azioni, pose, abiti, ambiente, illuminazione e atmosfera. Devono essere concisi, separati per pannello e rigorosamente SFW. Non includere dialoghi, didascalie, testo scritto o concetti astratti nelle immagini."
+  }
+}

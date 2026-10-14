@@ -1,0 +1,290 @@
+[
+    {
+        "Id": "a2b729b6d68ed4e0be6af0c5990c40a896fc5d3e5fdf492642684bd30946ecdf",
+        "Created": "2026-07-31T15:28:08.964519207Z",
+        "Path": "vllm",
+        "Args": [
+            "serve",
+            "AEON-7/Qwen3.6-35B-A3B-heretic-NVFP4",
+            "--host=0.0.0.0",
+            "--port=8001",
+            "--tensor-parallel-size=1",
+            "--trust-remote-code",
+            "--kv-cache-dtype=fp8",
+            "--moe-backend=marlin",
+            "--gpu-memory-utilization=0.80",
+            "--max-model-len=262144",
+            "--max-num-seqs=8",
+            "--max-num-batched-tokens=8192",
+            "--enable-chunked-prefill",
+            "--async-scheduling",
+            "--enable-prefix-caching",
+            "--load-format=fastsafetensors",
+            "--reasoning-parser=qwen3",
+            "--tool-call-parser=qwen3_xml",
+            "--enable-auto-tool-choice",
+            "--mm-encoder-tp-mode=data"
+        ],
+        "State": {
+            "Status": "exited",
+            "Running": false,
+            "Paused": false,
+            "Restarting": false,
+            "OOMKilled": false,
+            "Dead": false,
+            "Pid": 0,
+            "ExitCode": 0,
+            "Error": "",
+            "StartedAt": "2026-07-31T15:28:08.995984931Z",
+            "FinishedAt": "2026-08-30T17:06:20.690022528Z"
+        },
+        "Image": "sha256:35268ba9a764848b84aac70772b780fc2e8a0342330d66769134faf2b00c96d0",
+        "ResolvConfPath": "/var/lib/docker/containers/a2b729b6d68ed4e0be6af0c5990c40a896fc5d3e5fdf492642684bd30946ecdf/resolv.conf",
+        "HostnamePath": "/var/lib/docker/containers/a2b729b6d68ed4e0be6af0c5990c40a896fc5d3e5fdf492642684bd30946ecdf/hostname",
+        "HostsPath": "/var/lib/docker/containers/a2b729b6d68ed4e0be6af0c5990c40a896fc5d3e5fdf492642684bd30946ecdf/hosts",
+        "LogPath": "/var/lib/docker/containers/a2b729b6d68ed4e0be6af0c5990c40a896fc5d3e5fdf492642684bd30946ecdf/a2b729b6d68ed4e0be6af0c5990c40a896fc5d3e5fdf492642684bd30946ecdf-json.log",
+        "Name": "/vllm_qwen_optimized",
+        "RestartCount": 0,
+        "Driver": "overlay2",
+        "Platform": "linux",
+        "MountLabel": "",
+        "ProcessLabel": "",
+        "AppArmorProfile": "unconfined",
+        "ExecIDs": null,
+        "HostConfig": {
+            "Binds": [
+                "/home/v.besozzi/.cache/huggingface:/root/.cache/huggingface:rw"
+            ],
+            "ContainerIDFile": "",
+            "LogConfig": {
+                "Type": "json-file",
+                "Config": {}
+            },
+            "NetworkMode": "vllm_default",
+            "PortBindings": {
+                "8001/tcp": [
+                    {
+                        "HostIp": "",
+                        "HostPort": "8001"
+                    }
+                ]
+            },
+            "RestartPolicy": {
+                "Name": "unless-stopped",
+                "MaximumRetryCount": 0
+            },
+            "AutoRemove": false,
+            "VolumeDriver": "",
+            "VolumesFrom": null,
+            "ConsoleSize": [
+                0,
+                0
+            ],
+            "CapAdd": null,
+            "CapDrop": null,
+            "CgroupnsMode": "private",
+            "Dns": null,
+            "DnsOptions": null,
+            "DnsSearch": null,
+            "ExtraHosts": [],
+            "GroupAdd": null,
+            "IpcMode": "host",
+            "Cgroup": "",
+            "Links": null,
+            "OomScoreAdj": 0,
+            "PidMode": "",
+            "Privileged": true,
+            "PublishAllPorts": false,
+            "ReadonlyRootfs": false,
+            "SecurityOpt": [
+                "label=disable"
+            ],
+            "UTSMode": "",
+            "UsernsMode": "",
+            "ShmSize": 67108864,
+            "Runtime": "runc",
+            "Isolation": "",
+            "CpuShares": 0,
+            "Memory": 0,
+            "NanoCpus": 0,
+            "CgroupParent": "",
+            "BlkioWeight": 0,
+            "BlkioWeightDevice": null,
+            "BlkioDeviceReadBps": null,
+            "BlkioDeviceWriteBps": null,
+            "BlkioDeviceReadIOps": null,
+            "BlkioDeviceWriteIOps": null,
+            "CpuPeriod": 0,
+            "CpuQuota": 0,
+            "CpuRealtimePeriod": 0,
+            "CpuRealtimeRuntime": 0,
+            "CpusetCpus": "",
+            "CpusetMems": "",
+            "Devices": null,
+            "DeviceCgroupRules": null,
+            "DeviceRequests": [
+                {
+                    "Driver": "nvidia",
+                    "Count": -1,
+                    "DeviceIDs": null,
+                    "Capabilities": [
+                        [
+                            "gpu"
+                        ]
+                    ],
+                    "Options": null
+                }
+            ],
+            "MemoryReservation": 0,
+            "MemorySwap": 0,
+            "MemorySwappiness": null,
+            "OomKillDisable": null,
+            "PidsLimit": null,
+            "Ulimits": null,
+            "CpuCount": 0,
+            "CpuPercent": 0,
+            "IOMaximumIOps": 0,
+            "IOMaximumBandwidth": 0,
+            "MaskedPaths": null,
+            "ReadonlyPaths": null
+        },
+        "GraphDriver": {
+            "Data": {
+                "ID": "a2b729b6d68ed4e0be6af0c5990c40a896fc5d3e5fdf492642684bd30946ecdf",
+                "LowerDir": "/var/lib/docker/overlay2/4f825790f68a571e65fa9adecfacea2917b10b7245b33578d5316ebafb1a5ce9-init/diff:/var/lib/docker/overlay2/e0954aafa9d9bec10da53169ca9a3a8a21564459f28ff7e50afad406fa0f4dde/diff:/var/lib/docker/overlay2/6e98f8805defb0d5c05c3d40fcea0f8737a2a09ab30d0e9c66c99cbbf5e1496b/diff:/var/lib/docker/overlay2/f82498cbb1bdb8222a27827a79129c68e01f9e7014bf6af52300f4b474ca0f15/diff:/var/lib/docker/overlay2/d4de0618eb9c3940f9858093568fd7ae3f27d955526d0dcb3a1e347c9d371cb1/diff:/var/lib/docker/overlay2/c9ece8e1dc0919bc022e09e6302710d733d5160f73df70ea747c8cd6bc1df52b/diff:/var/lib/docker/overlay2/9d2e7aea930b12b996604a60521e66ed54ad7bbdbf07c87e7d7870e57bbed87c/diff:/var/lib/docker/overlay2/ffe2dd381c2837230ef8e44510023445fbc8d63dfc1e73c32382c01935c29d63/diff:/var/lib/docker/overlay2/a6a09613d2edda68e795fe6587cfd43e98aabe68378c35032a3fe7e8cc2813aa/diff:/var/lib/docker/overlay2/c39c25961006939682dbb856c52da221f87002ffd5b0fe12100b28a88310080c/diff:/var/lib/docker/overlay2/99772956fbe511f1757fb88db22130305854a574b2e6c2df27f0ba9c25e1a691/diff:/var/lib/docker/overlay2/c340b36a80707233ba58be4d19ab0dac351b20a94991bb03dfc758738ef8914f/diff:/var/lib/docker/overlay2/237e5b0ae7561303daafc905b4c1b39e91d39655b9450534dd0b7ca050fbc0f6/diff:/var/lib/docker/overlay2/7236df1fce65db8ea6daa7d5a6463d4fd23c67429eacc211650ecb52b42033bb/diff:/var/lib/docker/overlay2/1b7f159e8944a4eb5c4d855252ae2e56396aecb6068edb5d6d1675de95d742e7/diff:/var/lib/docker/overlay2/12e7db5cb321c43ff86e046a1ce6448e1cd6c9efa4643d4a29f9ea22e2c0ff58/diff:/var/lib/docker/overlay2/2ca83ad64bea257de6c3f47018d58d797f7a06b11c30f94b8624f400c88b54a9/diff:/var/lib/docker/overlay2/6e0f63cf7f51cf9d96c0a86a259fe282498b37bd880b8df6fd93c612de816f9b/diff:/var/lib/docker/overlay2/42f36a72b6dd0f9b84f21382f8e1f6aa7fc53f25f019717c69b272a184425a4f/diff:/var/lib/docker/overlay2/467ab98706ad9a92beea817f5958210c911ac1039fde4f800bdfcbea762a8324/diff:/var/lib/docker/overlay2/4dc91323f1592a794a2e03927420137bcce331dc00b4245f48711ce5a0791c26/diff:/var/lib/docker/overlay2/05d2adc122c1fd8f44609c877efd9faa72bc0785d24b228a071244f75f6b780f/diff:/var/lib/docker/overlay2/9b6deeb94d5bec93ecdf6854b25b29292b32fe487090d0a71a6d102da44f22d9/diff:/var/lib/docker/overlay2/3a7eae18f357b4717ceacaf6548f4eaa46365156f00ef094ea5c6c9895adda2b/diff:/var/lib/docker/overlay2/c83f05f98803796d092582badbcf70692e7b1294f83f10980e572427f4ac0404/diff:/var/lib/docker/overlay2/c9ba6c15458df6b3d5b8bd549300487a75de5f0c15939aaf96d14572d91f5541/diff:/var/lib/docker/overlay2/cd15a9202983e175040c4c90b6cf6ba5a46d5a70db461d81c8eff3e6db0ca4d8/diff:/var/lib/docker/overlay2/e71e24a17e1d9c945aa36269234cdbe281a9859afaf1f803e5763615b2fc44e1/diff:/var/lib/docker/overlay2/8c85b3588063558ce052191bebd6c3114991a35913ca979117daea9622b865a5/diff:/var/lib/docker/overlay2/077efe5328a9d31203db82ad5a6a182dc33219662be3ba85329c298e497c44cf/diff:/var/lib/docker/overlay2/e05a28b50ff05881e41fe4e790911b16b24c8512bdb95ebb5db32e622cecd5de/diff:/var/lib/docker/overlay2/f0cc750d84e02bb1e3a99e57c415875a8c2de30363a76edc159b40d227493b78/diff:/var/lib/docker/overlay2/4c641b9b8cfdee185371ecc898ffa73237647c18bfda54d77999ad8c8aa7d110/diff",
+                "MergedDir": "/var/lib/docker/overlay2/4f825790f68a571e65fa9adecfacea2917b10b7245b33578d5316ebafb1a5ce9/merged",
+                "UpperDir": "/var/lib/docker/overlay2/4f825790f68a571e65fa9adecfacea2917b10b7245b33578d5316ebafb1a5ce9/diff",
+                "WorkDir": "/var/lib/docker/overlay2/4f825790f68a571e65fa9adecfacea2917b10b7245b33578d5316ebafb1a5ce9/work"
+            },
+            "Name": "overlay2"
+        },
+        "Mounts": [
+            {
+                "Type": "bind",
+                "Source": "/home/v.besozzi/.cache/huggingface",
+                "Destination": "/root/.cache/huggingface",
+                "Mode": "rw",
+                "RW": true,
+                "Propagation": "rprivate"
+            }
+        ],
+        "Config": {
+            "Hostname": "a2b729b6d68e",
+            "Domainname": "",
+            "User": "",
+            "AttachStdin": false,
+            "AttachStdout": true,
+            "AttachStderr": true,
+            "ExposedPorts": {
+                "8001/tcp": {}
+            },
+            "Tty": false,
+            "OpenStdin": false,
+            "StdinOnce": false,
+            "Env": [
+                "PATH=/usr/local/nvidia/bin:/usr/local/cuda/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+                "NVARCH=sbsa",
+                "NVIDIA_REQUIRE_CUDA=cuda>=13.0 brand=unknown,driver>=535,driver<536 brand=grid,driver>=535,driver<536 brand=tesla,driver>=535,driver<536 brand=nvidia,driver>=535,driver<536 brand=quadro,driver>=535,driver<536 brand=quadrortx,driver>=535,driver<536 brand=nvidiartx,driver>=535,driver<536 brand=vapps,driver>=535,driver<536 brand=vpc,driver>=535,driver<536 brand=vcs,driver>=535,driver<536 brand=vws,driver>=535,driver<536 brand=cloudgaming,driver>=535,driver<536 brand=unknown,driver>=550,driver<551 brand=grid,driver>=550,driver<551 brand=tesla,driver>=550,driver<551 brand=nvidia,driver>=550,driver<551 brand=quadro,driver>=550,driver<551 brand=quadrortx,driver>=550,driver<551 brand=nvidiartx,driver>=550,driver<551 brand=vapps,driver>=550,driver<551 brand=vpc,driver>=550,driver<551 brand=vcs,driver>=550,driver<551 brand=vws,driver>=550,driver<551 brand=cloudgaming,driver>=550,driver<551 brand=unknown,driver>=565,driver<566 brand=grid,driver>=565,driver<566 brand=tesla,driver>=565,driver<566 brand=nvidia,driver>=565,driver<566 brand=quadro,driver>=565,driver<566 brand=quadrortx,driver>=565,driver<566 brand=nvidiartx,driver>=565,driver<566 brand=vapps,driver>=565,driver<566 brand=vpc,driver>=565,driver<566 brand=vcs,driver>=565,driver<566 brand=vws,driver>=565,driver<566 brand=cloudgaming,driver>=565,driver<566 brand=unknown,driver>=570,driver<571 brand=grid,driver>=570,driver<571 brand=tesla,driver>=570,driver<571 brand=nvidia,driver>=570,driver<571 brand=quadro,driver>=570,driver<571 brand=quadrortx,driver>=570,driver<571 brand=nvidiartx,driver>=570,driver<571 brand=vapps,driver>=570,driver<571 brand=vpc,driver>=570,driver<571 brand=vcs,driver>=570,driver<571 brand=vws,driver>=570,driver<571 brand=cloudgaming,driver>=570,driver<571 brand=unknown,driver>=575,driver<576 brand=grid,driver>=575,driver<576 brand=tesla,driver>=575,driver<576 brand=nvidia,driver>=575,driver<576 brand=quadro,driver>=575,driver<576 brand=quadrortx,driver>=575,driver<576 brand=nvidiartx,driver>=575,driver<576 brand=vapps,driver>=575,driver<576 brand=vpc,driver>=575,driver<576 brand=vcs,driver>=575,driver<576 brand=vws,driver>=575,driver<576 brand=cloudgaming,driver>=575,driver<576",
+                "NV_CUDA_CUDART_VERSION=13.0.96-1",
+                "CUDA_VERSION=13.0.2",
+                "LD_LIBRARY_PATH=/usr/local/nvidia/lib64:/usr/local/cuda/lib64:/usr/local/nvidia/lib:/usr/local/nvidia/lib64:/usr/local/cuda/lib64",
+                "NVIDIA_VISIBLE_DEVICES=all",
+                "NVIDIA_DRIVER_CAPABILITIES=compute,utility",
+                "DEBIAN_FRONTEND=noninteractive",
+                "UV_HTTP_TIMEOUT=500",
+                "UV_INDEX_STRATEGY=unsafe-best-match",
+                "UV_LINK_MODE=copy",
+                "UV_PYTHON_INSTALL_DIR=/opt/uv/python",
+                "UV_CACHE_DIR=/opt/uv/cache",
+                "VLLM_ENABLE_CUDA_COMPATIBILITY=0",
+                "TORCH_CUDA_ARCH_LIST=8.0 8.7 8.9 9.0 10.0 11.0 12.0",
+                "VLLM_USAGE_SOURCE=production-docker-image",
+                "VLLM_BUILD_COMMIT=ffd46bfab2128bb84146050e98b51a617c6575ab",
+                "VLLM_BUILD_PIPELINE=019d130e-464e-4ff7-b84b-492992c0c06b",
+                "VLLM_BUILD_URL=https://buildkite.com/vllm/release-v2/builds/4244",
+                "VLLM_IMAGE_TAG=vllm/vllm-openai:v0.26.0"
+            ],
+            "Cmd": [
+                "AEON-7/Qwen3.6-35B-A3B-heretic-NVFP4",
+                "--host=0.0.0.0",
+                "--port=8001",
+                "--tensor-parallel-size=1",
+                "--trust-remote-code",
+                "--kv-cache-dtype=fp8",
+                "--moe-backend=marlin",
+                "--gpu-memory-utilization=0.80",
+                "--max-model-len=262144",
+                "--max-num-seqs=8",
+                "--max-num-batched-tokens=8192",
+                "--enable-chunked-prefill",
+                "--async-scheduling",
+                "--enable-prefix-caching",
+                "--load-format=fastsafetensors",
+                "--reasoning-parser=qwen3",
+                "--tool-call-parser=qwen3_xml",
+                "--enable-auto-tool-choice",
+                "--mm-encoder-tp-mode=data"
+            ],
+            "Image": "vllm/vllm-openai:latest",
+            "Volumes": null,
+            "WorkingDir": "/vllm-workspace",
+            "Entrypoint": [
+                "vllm",
+                "serve"
+            ],
+            "Labels": {
+                "ai.vllm.build.commit": "ffd46bfab2128bb84146050e98b51a617c6575ab",
+                "ai.vllm.build.pipeline": "019d130e-464e-4ff7-b84b-492992c0c06b",
+                "ai.vllm.build.url": "https://buildkite.com/vllm/release-v2/builds/4244",
+                "ai.vllm.image.tag": "vllm/vllm-openai:v0.26.0",
+                "com.docker.compose.config-hash": "8f310ed5804553f91d3c8f5aa8635c94d83ca09d8bc47247c7676a66fae2a643",
+                "com.docker.compose.container-number": "1",
+                "com.docker.compose.depends_on": "",
+                "com.docker.compose.image": "sha256:35268ba9a764848b84aac70772b780fc2e8a0342330d66769134faf2b00c96d0",
+                "com.docker.compose.oneoff": "False",
+                "com.docker.compose.project": "vllm",
+                "com.docker.compose.project.config_files": "/home/v.besozzi/Desktop/vllm/docker-compose.yaml",
+                "com.docker.compose.project.working_dir": "/home/v.besozzi/Desktop/vllm",
+                "com.docker.compose.service": "vllm-qwen",
+                "com.docker.compose.version": "5.0.2",
+                "maintainer": "NVIDIA CORPORATION <cudatools@nvidia.com>",
+                "org.opencontainers.image.ref.name": "ubuntu",
+                "org.opencontainers.image.revision": "ffd46bfab2128bb84146050e98b51a617c6575ab",
+                "org.opencontainers.image.source": "https://github.com/vllm-project/vllm",
+                "org.opencontainers.image.url": "https://buildkite.com/vllm/release-v2/builds/4244",
+                "org.opencontainers.image.version": "vllm/vllm-openai:v0.26.0"
+            }
+        },
+        "NetworkSettings": {
+            "SandboxID": "",
+            "SandboxKey": "",
+            "Ports": {},
+            "Networks": {
+                "vllm_default": {
+                    "IPAMConfig": null,
+                    "Links": null,
+                    "Aliases": [
+                        "vllm_qwen_optimized",
+                        "vllm-qwen"
+                    ],
+                    "DriverOpts": null,
+                    "GwPriority": 0,
+                    "NetworkID": "9e3370c50115093721abb9694e99358dba71ec527e8acab223aa2069da79ac1e",
+                    "EndpointID": "",
+                    "Gateway": "",
+                    "IPAddress": "",
+                    "MacAddress": "",
+                    "IPPrefixLen": 0,
+                    "IPv6Gateway": "",
+                    "GlobalIPv6Address": "",
+                    "GlobalIPv6PrefixLen": 0,
+                    "DNSNames": [
+                        "vllm_qwen_optimized",
+                        "vllm-qwen",
+                        "a2b729b6d68e"
+                    ]
+                }
+            }
+        }
+    }
+]

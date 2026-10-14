@@ -1,0 +1,15 @@
+# bright_composer — Python dependencies (install with: pip install -r requirements.txt)
+#
+# print_receiver.py GUI also needs tkinter, which pip cannot install.
+# System packages:
+#   Ubuntu:          sudo apt install python3-tk
+#   macOS (brew):    brew install python-tk@3.14
+# Without it print_receiver.py still runs headless (web UI only).
+
+# image composing + GUI viewer (compose_daemon.py, print_receiver.py)
+pillow>=11
+
+# optional Drive upload mode (drive_upload.py, used by compose_daemon.py)
+google-api-python-client>=2
+google-auth>=2
+google-auth-oauthlib>=1
