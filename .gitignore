@@ -146,6 +146,12 @@ vite.config.ts.timestamp-*
 # Comic-Style Storyteller stack
 # ============================================================
 
+# Local OS and runtime data
+**/.DS_Store
+bright_composer/bright/*_DONE/
+bright_composer/outbox/
+bright_composer/tmp/
+
 # Large binaries and generated output - never in git
 comfyui/models/
 comfyui/output/

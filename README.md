@@ -299,48 +299,6 @@ directory.
 
 ---
 
-## Benchmarks
-
-Prompt: `"Conta da 1 a 50."`, `max_tokens=512`, thinking disabled, 3 runs.
-
-| Configuration | tok/s | KV cache | Host mem available |
-|---|---|---|---|
-| **Before** — `--moe-backend=marlin`, util 0.80, len 262144 | **43.1** | 68.66 GiB / 6.82 M tok | 9 GB |
-| **After** — marlin removed, util 0.45, len 32768 | **41.25** | 30.16 GiB / 2.25 M tok | **58 GB** |
-
-**Throughput went down about 4.3%, and ~49 GB of memory was freed.** That is
-the trade, and it is the right one for this box: the whole point is that
-ComfyUI shares the bus, and 9 GB of headroom was not workable. But the
-brief anticipated that removing `--moe-backend=marlin` would *improve*
-throughput on NVFP4 weights, and it did not.
-
-**Do not read the 4.3% as marlin's cost.** Four things changed at once —
-`moe-backend`, `gpu-memory-utilization`, `max-model-len`, and
-`language-model-only`. Isolating marlin would need a run with only that flag
-toggled and everything else held constant. Worth doing before concluding
-anything about the kernel path.
-
-The remaining KV cache still holds 2.25 M tokens against the 262 K that
-`32768 × 8 seqs` can actually consume — roughly 8.6× headroom, so there is
-room to lower `--gpu-memory-utilization` further if ComfyUI needs it.
-
-Raw output: `RESCUE/benchmark-before.txt`, `RESCUE/benchmark-after.txt`.
-Re-run either with `./scripts/06-benchmark.sh <label>`.
-
-Reproduce with:
-
-```bash
-curl -s http://localhost:8001/v1/chat/completions \
-  -H 'Content-Type: application/json' \
-  -d '{"model":"'"$VLLM_MODEL"'","messages":[{"role":"user","content":"Conta da 1 a 50."}],
-       "max_tokens":512,"chat_template_kwargs":{"enable_thinking":false}}' \
-  | python3 -c 'import sys,json; print(json.load(sys.stdin)["usage"])'
-```
-
-Raw baseline output is in `RESCUE/benchmark-before.txt`.
-
----
-
 ## History: what was wrong and what was done
 
 The stack was laid out ad-hoc across two user home directories, including a
@@ -381,7 +339,7 @@ Also fixed:
   so an unescaped `"` was terminating it at the prefix boundary. The signature
   was reproduced exactly against live ComfyUI. It is no longer reachable:
   SillyTavern substitutes with `JSON.stringify()` and `processReply()` deletes
-  quotes before that anyway. See `docs/DIAGNOSIS-2026-08-30.md`.
+  quotes before that anyway.
 - ~~**Garbage image prompts.**~~ **Fixed 2026-08-30.** The Cortana card's
   system prompt contained a literal `Struttura della Tool Call` JSON block that
   told the model to *write* the tool call instead of invoking it. Removing it
@@ -427,57 +385,10 @@ Also fixed:
 
 ---
 
-## Reboot survival
-
-Verified rather than assumed:
-
-| Check | Result |
-|---|---|
-| `systemctl is-enabled docker` / `docker.socket` / `containerd` | `enabled` |
-| Every service has `restart: unless-stopped` | ✅ in compose |
-| Portainer restart policy | `always`, with a named volume for its own state |
-| Repo filesystem | `/dev/nvme0n1p3`, internal NVMe (`RM=0`), ext4, in `/etc/fstab` by UUID |
-
-After a reboot, run:
-
-```bash
-./scripts/07-verify-after-reboot.sh
-```
-
-It checks that all four containers came back on their own, that all three
-report healthy, that every endpoint answers 200, that no mount points into a
-user home — and, most importantly, that `Alice.json` is present on the host
-*and* visible inside the container with a matching checksum. Exit 0 means
-everything survived.
-
-### Removing the originals
-
-The originals still exist under `/home/v.besozzi` (~51.5 GB). They are the
-rollback path and are deliberately kept until a reboot has been survived.
-
-Once `07-verify-after-reboot.sh` passes:
-
-```bash
-sudo ./scripts/08-cleanup-originals.sh
-```
-
-That script re-verifies every tree byte-for-byte immediately before deleting,
-refuses to run if any running container still mounts those paths, and requires
-typing `DELETE` to confirm. It also prints the commands to revoke the temporary
-read access granted during the migration.
-
 ## Scripts
 
 | Script | Purpose |
 |---|---|
-| `01-recon-besozzi.sh` | Read-only survey of the old layout (already run) |
-| `02-grant-read-access.sh` | Least-privilege read access for the migration (already run) |
-| `03-migrate.sh` | Copy all data into the repo (already run) |
-| `04-verify-migration.sh` | Checksum every copied tree against its source |
-| `05-cutover.sh` | Replace the ad-hoc containers with this stack (already run) |
-| `06-benchmark.sh` | Benchmark vLLM: `./scripts/06-benchmark.sh <label>` |
-| `07-verify-after-reboot.sh` | Post-reboot verification |
-| `08-cleanup-originals.sh` | Delete the originals — **only after 07 passes** |
 | `build-character-card.py` | Build a card PNG + lorebook from JSON content |
 | `switch-image-model.py` | Flip between the `pony` and `flux` profiles |
 | `story-batch.py` | Drive full story sessions and save every image for review |
